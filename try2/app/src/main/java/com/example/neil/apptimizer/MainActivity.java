@@ -1,6 +1,5 @@
-package com.example.alisha.try2;
+package com.example.neil.apptimizer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;

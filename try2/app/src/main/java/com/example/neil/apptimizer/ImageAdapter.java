@@ -1,7 +1,6 @@
-package com.example.alisha.try2;
+package com.example.neil.apptimizer;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;

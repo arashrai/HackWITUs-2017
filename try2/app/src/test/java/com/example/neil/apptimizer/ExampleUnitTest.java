@@ -1,4 +1,4 @@
-package com.example.alisha.try2;
+package com.example.neil.apptimizer;
 
 import org.junit.Test;
 
