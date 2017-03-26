@@ -3,6 +3,7 @@ import android.os.Bundle;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +23,10 @@ import java.util.Arrays;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
 import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
+import cz.msebera.android.httpclient.protocol.HTTP;
 
 // Apache Http Client
 public class questions extends AppCompatActivity {
@@ -55,24 +59,52 @@ public class questions extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            postCoords("BACK_BUTTON", 0, 0);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     // Overriding onTouchEvent to test user IO
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        AsyncHttpClient client = new AsyncHttpClient();
+        int action = MotionEventCompat.getActionMasked(event);
+        float x_coord, y_coord;
+        String DEBUG_TAG = "Touch Event";
+        switch (action) {
+            case (MotionEvent.ACTION_DOWN):
+                Log.d(DEBUG_TAG, "Action was DOWN");
+                x_coord = event.getRawX();
+                y_coord = event.getRawY();
+                postCoords("ACTION_DOWN", x_coord, y_coord);
+                return true;
+            default:
+                return super.onTouchEvent(event);
+        }
+
+    }
+
+    public void postCoords(String action, float x, float y) {
+
         JSONObject jsonParams = new JSONObject();
         try {
-            jsonParams.put("Asas", "2323");
+            jsonParams.put("event", action);
+            jsonParams.put("x", x);
+            jsonParams.put("y", y);
         } catch (JSONException e) {
             Log.e("MYAPP", "unexpected JSON exception", e);
         }
 
-        StringEntity entity = null;
-
+        AsyncHttpClient client = new AsyncHttpClient();
+        ByteArrayEntity entity = null;
         try {
-            entity = new StringEntity(jsonParams.toString());
+            entity = new ByteArrayEntity(jsonParams.toString().getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        entity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 
         client.post(null, "http://arashrai.com:5000/hack", entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
@@ -84,6 +116,11 @@ public class questions extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 Log.d("ke", "success");
+                try {
+                    System.out.write(response);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -105,24 +142,6 @@ public class questions extends AppCompatActivity {
                 Log.d("ke", "retry");
             }
         });
-
-        int action = MotionEventCompat.getActionMasked(event);
-        float x_coord, y_coord;
-        String DEBUG_TAG = "Touch Event";
-        switch (action) {
-            case (MotionEvent.ACTION_DOWN):
-                Log.d(DEBUG_TAG, "Action was DOWN");
-                x_coord = event.getRawX();
-                y_coord = event.getRawY();
-                Log.d(DEBUG_TAG, Float.toString(x_coord));
-                Log.d(DEBUG_TAG, Float.toString(y_coord));
-                return true;
-            default:
-                return super.onTouchEvent(event);
-        }
     }
-
-
-
 
 }
