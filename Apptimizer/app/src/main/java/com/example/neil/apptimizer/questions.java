@@ -11,10 +11,15 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import org.apache.http.entity.StringEntity;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
 
 // Apache Http Client
 public class questions extends AppCompatActivity {
@@ -52,8 +57,57 @@ public class questions extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         AsyncHttpClient client = new AsyncHttpClient();
         JSONObject jsonParams = new JSONObject();
-        jsonParams.put("notes", "Test api support");
-        StringEntity entity = new StringEntity(jsonParams.toString());
+        try {
+            jsonParams.put("Asas", "2323");
+        } catch (JSONException e) {
+            Log.e("MYAPP", "unexpected JSON exception", e);
+        }
+        HttpEntity entity = new HttpEntity() {
+            @Override
+            public boolean isRepeatable() {
+                return false;
+            }
+
+            @Override
+            public boolean isChunked() {
+                return false;
+            }
+
+            @Override
+            public long getContentLength() {
+                return 0;
+            }
+
+            @Override
+            public Header getContentType() {
+                return null;
+            }
+
+            @Override
+            public Header getContentEncoding() {
+                return null;
+            }
+
+            @Override
+            public InputStream getContent() throws IOException, IllegalStateException {
+                return null;
+            }
+
+            @Override
+            public void writeTo(OutputStream outstream) throws IOException {
+
+            }
+
+            @Override
+            public boolean isStreaming() {
+                return false;
+            }
+
+            @Override
+            public void consumeContent() throws IOException {
+
+            }
+        };
         client.post(null, "http://arashrai.com:5000/hack", entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
