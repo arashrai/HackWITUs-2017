@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#764B8E"
+    android:orientation="vertical"
+    tools:context="com.example.neil.apptimizer.questions">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-thin"
+        android:textColor="#440027"
+        android:textSize="30dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/Q1"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#9775AA"
+        android:inputType="text"
+        android:textSize="20dip"
+        android:id="@+id/answer"
+        android:layout_margin="10dp"
+        android:hint="Answer"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Okay"
+            android:onClick="onAnswerClick"
+            android:layout_margin="2dp"
+            android:padding="2dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:onClick="onHintClick"
+            android:layout_margin="2dp"
+            android:text="Hint"/>
+
+    </LinearLayout>
+
+</LinearLayout>
