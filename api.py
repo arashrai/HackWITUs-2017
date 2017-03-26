@@ -1,9 +1,10 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
 from json import dumps
+import subprocess
+import requests
 
-# Create a engine for connecting to SQLite3.
-# Assuming salaries.db is in your app root folder
+# Python 3
 
 
 app = Flask(__name__)
@@ -12,10 +13,11 @@ api = Api(app)
 
 class hack(Resource):
     def get(self):
-        return {'posted': 3}
+        return {'get_success': 'true', 'data': request.data}
 
     def post(self):
-        return {'posted': 1}
+        # subprocess.call('adb shell input tap', shell=True)
+        return {'post_success': 'true', 'data': request.data}
 
 
 api.add_resource(hack, '/hack')
