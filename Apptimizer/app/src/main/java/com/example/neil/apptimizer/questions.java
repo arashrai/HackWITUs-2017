@@ -7,15 +7,24 @@ import android.widget.Toast;
 import android.view.MotionEvent;
 import android.support.v4.view.MotionEventCompat;
 import android.util.Log;
+import com.loopj.android.http.*;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+
 import java.io.IOException;
 import java.net.URL;
+import java.io.OutputStreamWriter;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+
 // Apache Http Client
 import java.net.URLConnection;
 import java.io.DataInputStream;
 import java.net.URLEncoder;
+
+import cz.msebera.android.httpclient.Header;
 
 public class questions extends AppCompatActivity {
 
@@ -50,6 +59,34 @@ public class questions extends AppCompatActivity {
     // Overriding onTouchEvent to test user IO
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://arashrai.com:5000/hack", null, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onStart() {
+                // called before request is started
+                Log.d("ke", "onStart");
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                Log.d("ke", "success");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
+                // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                Log.d("ke", errorResponse.toString());
+
+            }
+
+            @Override
+            public void onRetry(int retryNo) {
+                // called when request is retried
+                Log.d("ke", "retry");
+            }
+        });
+
         int action = MotionEventCompat.getActionMasked(event);
         float x_coord, y_coord;
         String DEBUG_TAG = "Touch Event";
@@ -60,43 +97,13 @@ public class questions extends AppCompatActivity {
                 y_coord = event.getRawY();
                 Log.d(DEBUG_TAG, Float.toString(x_coord));
                 Log.d(DEBUG_TAG, Float.toString(y_coord));
-                sendPostRequest();
                 return true;
             default:
                 return super.onTouchEvent(event);
         }
     }
 
-    void sendPostRequest() {
-        try {
-            URL url;
-            URLConnection urlConn;
-            DataOutputStream printout;
-            DataInputStream  input;
-            url = new URL ("http://arashrai.com:5000/hack");
-            urlConn = url.openConnection();
-            urlConn.setDoInput (true);
-            urlConn.setDoOutput (true);
-            urlConn.setUseCaches (false);
-            urlConn.setRequestProperty("Content-Type","application/json");
-            urlConn.setRequestProperty("Host", "android.schoolportal.gr");
-            urlConn.connect();
-            //JSONObject
-            JSONObject jsonParam = new JSONObject();
-            jsonParam.put("ID", "25");
-            jsonParam.put("description", "Real");
-            jsonParam.put("enable", "true");
 
-            // Send POST output.
-            printout = new DataOutputStream(urlConn.getOutputStream ());
-            printout.writeBytes(URLEncoder.encode(jsonParam.toString(),"UTF-8"));
-            printout.flush ();
-            printout.close ();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 }
