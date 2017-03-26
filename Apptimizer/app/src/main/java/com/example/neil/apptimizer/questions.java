@@ -1,31 +1,22 @@
 package com.example.neil.apptimizer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.view.MotionEvent;
-import android.support.v4.view.MotionEventCompat;
-import android.util.Log;
-import com.loopj.android.http.*;
+
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-
-import java.io.IOException;
-import java.net.URL;
-import java.io.OutputStreamWriter;
-import org.json.JSONException;
+import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-
-// Apache Http Client
-import java.net.URLConnection;
-import java.io.DataInputStream;
-import java.net.URLEncoder;
 
 import cz.msebera.android.httpclient.Header;
 
+// Apache Http Client
 public class questions extends AppCompatActivity {
 
     @Override
@@ -60,8 +51,10 @@ public class questions extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://arashrai.com:5000/hack", null, new AsyncHttpResponseHandler() {
-
+        JSONObject jsonParams = new JSONObject();
+        jsonParams.put("notes", "Test api support");
+        StringEntity entity = new StringEntity(jsonParams.toString());
+        client.post(null, "http://arashrai.com:5000/hack", entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
                 // called before request is started
