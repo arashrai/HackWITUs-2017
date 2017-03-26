@@ -13,6 +13,23 @@ import android.widget.Toast;
 import android.util.Log;
 
 import static android.widget.AdapterView.*;
+import android.content.Intent;
+import java.util.logging.Logger;
+
+
+public class MainActivity extends AppCompatActivity {
+
+	    @Override
+	        protected void onCreate(Bundle savedInstanceState) {
+			        super.onCreate(savedInstanceState);
+				        setContentView(R.layout.splash_page);
+					    }
+
+	        public void onSplashPageClick(View view) {
+			        Intent intent = new Intent(this, questions.class);
+				        startActivity(intent);
+					    }
+}
 
 public class MainActivity extends AppCompatActivity implements OnItemClickListener{
 

@@ -1,0 +1,53 @@
+      // Populate a List from Array elements
+        final List<String> plantsList = new ArrayList<String>(Arrays.asList(plants));
+
+        // Data bind GridView with ArrayAdapter (String Array elements)
+        gv.setAdapter(new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_1, plantsList) {
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                // Return the GridView current item as a View
+                View view = super.getView(position, convertView, parent);
+
+                // Convert the view as a TextView widget
+                TextView tv = (TextView) view;
+
+                // set the TextView text color (GridView item color)
+                tv.setTextColor(Color.DKGRAY);
+
+                // Set the layout parameters for TextView widget
+                RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                        LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT
+                );
+                tv.setLayoutParams(lp);
+
+                // Get the TextView LayoutParams
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) tv.getLayoutParams();
+
+                // Set the width of TextView widget (item of GridView)
+                params.width = getPixelsFromDPs(MainActivity.this, 120);
+
+                // Set the TextView height (GridView item/row equal height)
+                params.height = getPixelsFromDPs(MainActivity.this,50);
+
+                // Set the TextView layout parameters
+                tv.setLayoutParams(params);
+
+                // Display TextView text in center position
+                tv.setGravity(Gravity.CENTER);
+
+                // Set the TextView text font family and text size
+                tv.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+
+                // Set the TextView text (GridView item text)
+                tv.setText(plantsList.get(position));
+
+                // Set the TextView background color
+                tv.setBackgroundColor(Color.parseColor("#FF78CF69"));
+
+                // Return the TextView widget as GridView item
+                return tv;
+            }
+        });
+}
