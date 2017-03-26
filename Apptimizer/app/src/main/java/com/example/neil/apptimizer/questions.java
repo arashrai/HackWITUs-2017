@@ -17,9 +17,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 // Apache Http Client
 public class questions extends AppCompatActivity {
@@ -62,52 +65,15 @@ public class questions extends AppCompatActivity {
         } catch (JSONException e) {
             Log.e("MYAPP", "unexpected JSON exception", e);
         }
-        HttpEntity entity = new HttpEntity() {
-            @Override
-            public boolean isRepeatable() {
-                return false;
-            }
 
-            @Override
-            public boolean isChunked() {
-                return false;
-            }
+        StringEntity entity = null;
 
-            @Override
-            public long getContentLength() {
-                return 0;
-            }
+        try {
+            entity = new StringEntity(jsonParams.toString());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public Header getContentType() {
-                return null;
-            }
-
-            @Override
-            public Header getContentEncoding() {
-                return null;
-            }
-
-            @Override
-            public InputStream getContent() throws IOException, IllegalStateException {
-                return null;
-            }
-
-            @Override
-            public void writeTo(OutputStream outstream) throws IOException {
-
-            }
-
-            @Override
-            public boolean isStreaming() {
-                return false;
-            }
-
-            @Override
-            public void consumeContent() throws IOException {
-
-            }
-        };
         client.post(null, "http://arashrai.com:5000/hack", entity, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -123,7 +89,13 @@ public class questions extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] errorResponse, Throwable e) {
                 // called when response HTTP status is "4XX" (eg. 401, 403, 404)
-                Log.d("ke", errorResponse.toString());
+                try {
+                    System.out.write(errorResponse);
+                } catch (IOException k) {
+                    Log.e("MYAPP", "unexpected JSON exception", k);
+                }
+                System.out.println(Arrays.toString(errorResponse));
+                Log.e("ke", "SDds", e);
 
             }
 
